@@ -22,11 +22,12 @@ namespace NeuralNetworkAPI.Data.Repository
             return all.Select(x => x).ToList();
         }
 
-        public void Save(T data)
+        public T Save(T data)
         {
             if(data.Id >= 0) {
                 all = all.Where(x => x.Id != data.Id).ToList();
                 all.Add(data);
+                return data;
             } else {
                 if(all.Count == 0) {
                     data.Id = 0;
@@ -34,6 +35,7 @@ namespace NeuralNetworkAPI.Data.Repository
                     data.Id = all.OrderByDescending(x => x.Id).First().Id + 1;
                 }
                 all.Add(data);
+                return data;
             }
         }
     }

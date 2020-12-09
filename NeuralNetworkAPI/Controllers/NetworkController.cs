@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NeuralNetworkAPI.Data;
 using NeuralNetworkAPI.Data.Http;
+using NeuralNetworkAPI.Data.Networks;
 using NeuralNetworkAPI.Data.Repository;
 using NeuralNetworkAPI.Utils;
 using System;
@@ -17,21 +18,24 @@ namespace NeuralNetworkAPI.Controllers
         [HttpPost]
         [Route("create")]
         [Produces("application/json")]
-        public Response Create(NetworkMetadata network)
+        public NetworkMetadataResponse Create(NetworkMetadata network)
         {
             User user = Authentication.GetUser(Request);
             if(user == null) {
-                return new Response(Response, HttpStatusCode.Unauthorized);
+                return new NetworkMetadataResponse(Response, HttpStatusCode.Unauthorized);
             }
+            NetworkMetadata data = null;
             try {
-                Repositories.Networks.Save(new NetworkMetadata() {
-                    Name = network.Name,
-                    OwnerId = user.Id
-                });
+                network.Id = -1;
+                network.OwnerId = user.Id;
+                data = Repositories.Networks.Save(network);
+                NetworkManager.InitializeNetwork(data);
             } catch(Exception exception) {
-                return new Response(Response, HttpStatusCode.InternalServerError, exception.Message);
+                return new NetworkMetadataResponse(Response, HttpStatusCode.InternalServerError, exception.Message);
             }
-            return new Response(Response, HttpStatusCode.OK);
+            return new NetworkMetadataResponse(Response, HttpStatusCode.OK) {
+                Network = data
+            };
         }
 
         [HttpGet]
