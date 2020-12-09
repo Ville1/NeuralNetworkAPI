@@ -5,7 +5,7 @@ namespace NeuralNetworkAPI.Data.Http
 {
     public class TeachResponse : Response
     {
-        public float SucceesRate { get; set; }
+        public float SuccessRate { get; set; }
 
         public TeachResponse(string message) : base(message)
         { }

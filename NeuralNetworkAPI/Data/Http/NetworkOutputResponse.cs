@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 using System.Net;
 
 namespace NeuralNetworkAPI.Data.Http
 {
     public class NetworkOutputResponse : Response
     {
-        public List<bool> Values { get; set; }
+        public string Output { get; set; }
 
         public NetworkOutputResponse(string message) : base(message)
         { }

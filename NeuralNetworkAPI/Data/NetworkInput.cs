@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace NeuralNetworkAPI.Data
 {
@@ -7,8 +6,8 @@ namespace NeuralNetworkAPI.Data
     public class NetworkInput
     {
         public long NetworkId { get; set; }
-        public List<bool> Inputs { get; set; }
-        public List<bool> ExpectedOutputs { get; set; }
+        public string Inputs { get; set; }
+        public string ExpectedOutputs { get; set; }
         public int TeachRepeats { get; set; }
     }
 }
