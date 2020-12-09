@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NeuralNetworkAPI.Data;
 using NeuralNetworkAPI.Data.Http;
+using NeuralNetworkAPI.Data.Repository;
 using NeuralNetworkAPI.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 namespace NeuralNetworkAPI.Controllers
@@ -17,12 +21,37 @@ namespace NeuralNetworkAPI.Controllers
         {
             User user = Authentication.GetUser(Request);
             if(user == null) {
-                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return new Response();
+                return new Response(Response, HttpStatusCode.Unauthorized);
             }
+            try {
+                Repositories.Networks.Save(new NetworkMetadata() {
+                    Name = network.Name,
+                    OwnerId = user.Id
+                });
+            } catch(Exception exception) {
+                return new Response(Response, HttpStatusCode.InternalServerError, exception.Message);
+            }
+            return new Response(Response, HttpStatusCode.OK);
+        }
 
-            Response.StatusCode = 200;
-            return new Response();
+        [HttpGet]
+        [Route("getall")]
+        [Produces("application/json")]
+        public NetworkMetadataListResponse GetAll()
+        {
+            User user = Authentication.GetUser(Request);
+            if (user == null) {
+                return new NetworkMetadataListResponse(Response, HttpStatusCode.Unauthorized);
+            }
+            List<NetworkMetadata> data = null;
+            try {
+                data = Repositories.Networks.GetAll().Where(x => x.OwnerId == user.Id).ToList();
+            } catch (Exception exception) {
+                return new NetworkMetadataListResponse(Response, HttpStatusCode.InternalServerError, exception.Message);
+            }
+            return new NetworkMetadataListResponse(Response, HttpStatusCode.OK) {
+                Networks = data
+            };
         }
     }
 }
