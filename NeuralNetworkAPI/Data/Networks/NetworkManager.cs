@@ -44,7 +44,7 @@ namespace NeuralNetworkAPI.Data.Networks
 
         private static string ParseSaveFile(NetworkMetadata metadata)
         {
-            return string.Format("{0}/{1}{2}.json", Settings.SaveLocation, FILE_PREFIX, metadata.Id);
+            return string.Format("{0}/{1}{2}.json", Settings.SaveLocation, FILE_PREFIX, metadata.Id.Value);
         }
     }
 }

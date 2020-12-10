@@ -30,8 +30,8 @@ namespace NeuralNetworkAPI.Controllers
             //Create a new network
             NetworkMetadata data = null;
             try {
-                network.Id = -1;
-                network.OwnerId = user.Id;
+                network.Id = null;
+                network.OwnerId = user.Id.Value;
                 data = Repositories.Networks.Save(network);
                 NetworkManager.InitializeNetwork(data);
             } catch(Exception exception) {
@@ -53,7 +53,7 @@ namespace NeuralNetworkAPI.Controllers
             }
             List<NetworkMetadata> data = null;
             try {
-                data = Repositories.Networks.GetAll().Where(x => x.OwnerId == user.Id).ToList();
+                data = Repositories.Networks.GetAll().Where(x => x.OwnerId == user.Id.Value).ToList();
             } catch (Exception exception) {
                 return new NetworkMetadataListResponse(Response, HttpStatusCode.InternalServerError, exception.Message);
             }
@@ -75,11 +75,11 @@ namespace NeuralNetworkAPI.Controllers
             }
 
             //Fetch network metadata
-            NetworkMetadata meta = Repositories.Networks.GetAll().FirstOrDefault(x => x.Id == input.NetworkId);
+            NetworkMetadata meta = Repositories.Networks.GetAll().FirstOrDefault(x => x.Id.Value == input.NetworkId);
             if (meta == null) {
                 return new NetworkOutputResponse(Response, HttpStatusCode.NotFound);
             }
-            if (meta.OwnerId != user.Id) {
+            if (meta.OwnerId != user.Id.Value) {
                 return new NetworkOutputResponse(Response, HttpStatusCode.Unauthorized);
             }
 
@@ -108,11 +108,11 @@ namespace NeuralNetworkAPI.Controllers
             }
 
             //Fetch network metadata
-            NetworkMetadata meta = Repositories.Networks.GetAll().FirstOrDefault(x => x.Id == input.NetworkId);
+            NetworkMetadata meta = Repositories.Networks.GetAll().FirstOrDefault(x => x.Id.Value == input.NetworkId);
             if(meta == null) {
                 return new NetworkOutputResponse(Response, HttpStatusCode.NotFound);
             }
-            if(meta.OwnerId != user.Id) {
+            if(meta.OwnerId != user.Id.Value) {
                 return new NetworkOutputResponse(Response, HttpStatusCode.Unauthorized);
             }
 
@@ -141,11 +141,11 @@ namespace NeuralNetworkAPI.Controllers
             }
 
             //Fetch network metadata
-            NetworkMetadata meta = Repositories.Networks.GetAll().FirstOrDefault(x => x.Id == input.NetworkId);
+            NetworkMetadata meta = Repositories.Networks.GetAll().FirstOrDefault(x => x.Id.Value == input.NetworkId);
             if (meta == null) {
                 return new TeachResponse(Response, HttpStatusCode.NotFound);
             }
-            if (meta.OwnerId != user.Id) {
+            if (meta.OwnerId != user.Id.Value) {
                 return new TeachResponse(Response, HttpStatusCode.Unauthorized);
             }
 

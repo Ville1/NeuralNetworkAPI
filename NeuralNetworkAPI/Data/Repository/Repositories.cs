@@ -9,10 +9,6 @@
             get {
                 if(users == null) {
                     users = new Repository<User>();
-                    users.Save(new User() {
-                        Username = "Admin",
-                        Password = "admin"
-                    });
                 }
                 return users;
             }

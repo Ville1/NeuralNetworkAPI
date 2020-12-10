@@ -21,7 +21,7 @@ namespace NeuralNetworkAPI.Controllers
             }
             return new UserResponse(Response, HttpStatusCode.OK) {
                 Users = Repositories.Users.GetAll().Select(x => new UserResponseData() {
-                    Id = x.Id,
+                    Id = x.Id.Value,
                     Username = x.Username
                 }).ToList()
             };

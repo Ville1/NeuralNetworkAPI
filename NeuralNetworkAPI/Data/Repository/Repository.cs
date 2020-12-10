@@ -22,7 +22,7 @@ namespace NeuralNetworkAPI.Data.Repository
 
         public T Get(long id)
         {
-            return GetAll().FirstOrDefault(x => x.Id == id);
+            return GetAll().FirstOrDefault(x => x.Id.Value == id);
         }
 
         public List<T> GetAll()
@@ -39,14 +39,14 @@ namespace NeuralNetworkAPI.Data.Repository
         {
             try {
                 List<T> all = GetAll();
-                if(data.Id >= 0) {
+                if(data.Id.HasValue) {
                     all = all.Where(x => x.Id != data.Id).ToList();
                     all.Add(data);
                 } else {
                     if(all.Count == 0) {
                         data.Id = 0;
                     } else {
-                        data.Id = all.OrderByDescending(x => x.Id).First().Id + 1;
+                        data.Id = all.OrderByDescending(x => x.Id.Value).First().Id.Value + 1;
                     }
                     all.Add(data);
                 }
