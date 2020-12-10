@@ -6,8 +6,8 @@ namespace NeuralNetworkAPI.Data
     public class NetworkInput
     {
         public long NetworkId { get; set; }
-        public string Inputs { get; set; }
-        public string ExpectedOutputs { get; set; }
+        public string Input { get; set; }
+        public string ExpectedOutput { get; set; }
         public int TeachRepeats { get; set; }
     }
 }

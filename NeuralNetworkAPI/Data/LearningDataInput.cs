@@ -14,7 +14,7 @@ namespace NeuralNetworkAPI.Data
     [Serializable]
     public class LearningDataCase
     {
-        public string Inputs { get; set; }
-        public string ExpectedOutputs { get; set; }
+        public string Input { get; set; }
+        public string ExpectedOutput { get; set; }
     }
 }

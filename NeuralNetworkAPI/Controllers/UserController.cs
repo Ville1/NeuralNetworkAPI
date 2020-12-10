@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NeuralNetworkAPI.Data;
+using NeuralNetworkAPI.Data.Http;
 using NeuralNetworkAPI.Data.Repository;
-using System.Collections.Generic;
+using NeuralNetworkAPI.Utils;
 using System.Linq;
+using System.Net;
 
 namespace NeuralNetworkAPI.Controllers
 {
@@ -10,9 +13,18 @@ namespace NeuralNetworkAPI.Controllers
     public class UserController : ControllerBase
     {
         [HttpGet]
-        public List<string> Get()
+        public UserResponse Get()
         {
-            return Repositories.Users.GetAll().Select(x => x.Username).ToList();
+            User user = Authentication.GetUser(Request);
+            if (user == null) {
+                return new UserResponse(Response, HttpStatusCode.Unauthorized);
+            }
+            return new UserResponse(Response, HttpStatusCode.OK) {
+                Users = Repositories.Users.GetAll().Select(x => new UserResponseData() {
+                    Id = x.Id,
+                    Username = x.Username
+                }).ToList()
+            };
         }
     }
 }

@@ -41,17 +41,17 @@ namespace NeuralNetworkAPI.Utils
                 return new NetworkOutputResponse(response, HttpStatusCode.Unauthorized);
             }
 
-            if(input.Inputs == null) {
+            if(input.Input == null) {
                 return new NetworkOutputResponse(response, HttpStatusCode.BadRequest) { Message = "Input must be in binary" };
             }
-            for(int i = 0; i < input.Inputs.Length; i++) {
-                if(input.Inputs[i] != '0' && input.Inputs[i] != '1') {
+            for(int i = 0; i < input.Input.Length; i++) {
+                if(input.Input[i] != '0' && input.Input[i] != '1') {
                     return new NetworkOutputResponse(response, HttpStatusCode.BadRequest) { Message = "Input must be in binary" };
                 }
             }
-            if(input.ExpectedOutputs != null) {
-                for (int i = 0; i < input.ExpectedOutputs.Length; i++) {
-                    if (input.ExpectedOutputs[i] != '0' && input.ExpectedOutputs[i] != '1') {
+            if(input.ExpectedOutput != null) {
+                for (int i = 0; i < input.ExpectedOutput.Length; i++) {
+                    if (input.ExpectedOutput[i] != '0' && input.ExpectedOutput[i] != '1') {
                         return new NetworkOutputResponse(response, HttpStatusCode.BadRequest) { Message = "Output must be in binary" };
                     }
                 }
@@ -67,19 +67,19 @@ namespace NeuralNetworkAPI.Utils
             }
 
             foreach(LearningDataCase lCase in input.Cases) {
-                if (lCase.Inputs == null) {
+                if (lCase.Input == null) {
                     return new TeachResponse(response, HttpStatusCode.BadRequest) { Message = "Input must be in binary" };
                 }
-                if (lCase.ExpectedOutputs == null) {
+                if (lCase.ExpectedOutput == null) {
                     return new TeachResponse(response, HttpStatusCode.BadRequest) { Message = "Output must be in binary" };
                 }
-                for (int i = 0; i < lCase.Inputs.Length; i++) {
-                    if (lCase.Inputs[i] != '0' && lCase.Inputs[i] != '1') {
+                for (int i = 0; i < lCase.Input.Length; i++) {
+                    if (lCase.Input[i] != '0' && lCase.Input[i] != '1') {
                         return new TeachResponse(response, HttpStatusCode.BadRequest) { Message = "Input must be in binary" };
                     }
                 }
-                for (int i = 0; i < lCase.ExpectedOutputs.Length; i++) {
-                    if (lCase.ExpectedOutputs[i] != '0' && lCase.ExpectedOutputs[i] != '1') {
+                for (int i = 0; i < lCase.ExpectedOutput.Length; i++) {
+                    if (lCase.ExpectedOutput[i] != '0' && lCase.ExpectedOutput[i] != '1') {
                         return new TeachResponse(response, HttpStatusCode.BadRequest) { Message = "Output must be in binary" };
                     }
                 }
