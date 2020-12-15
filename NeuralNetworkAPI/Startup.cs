@@ -9,6 +9,8 @@ namespace NeuralNetworkAPI
 {
     public class Startup
     {
+        private readonly string CORS_POLICY = "customCorsPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -20,6 +22,17 @@ namespace NeuralNetworkAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => {
+                options.AddPolicy(
+                    name: CORS_POLICY,
+                    builder => {
+                        builder.AllowAnyHeader();
+                        builder.AllowAnyOrigin();
+                        builder.AllowAnyMethod();
+                    }
+                );
+            });
+
             services.AddControllers();
         }
 
@@ -31,7 +44,7 @@ namespace NeuralNetworkAPI
             }
 
             app.UseRouting();
-
+            app.UseCors(CORS_POLICY);
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => {

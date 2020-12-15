@@ -19,7 +19,10 @@ namespace NeuralNetworkAPI.Utils
             if(!authorization.StartsWith("Basic ")) {
                 return null;
             }
-            authorization = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(authorization.Substring(6)));
+            authorization = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(authorization.Substring(authorization.IndexOf(' '))));
+            if (!authorization.Contains(':')) {
+                return null;
+            }
             string[] authorizationArray = authorization.Split(":");
             return Repositories.Users.GetAll().FirstOrDefault(x => x.Username == authorizationArray[0] && x.Password == authorizationArray[1]);
         }
