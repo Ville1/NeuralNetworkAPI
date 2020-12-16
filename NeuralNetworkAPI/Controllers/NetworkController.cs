@@ -42,6 +42,33 @@ namespace NeuralNetworkAPI.Controllers
             };
         }
 
+        [HttpPost]
+        [Route("delete")]
+        [Produces("application/json")]
+        public Response Delete(NetworkMetadata network)
+        {
+            //Authentication
+            User user = Authentication.GetUser(Request);
+            if (user == null) {
+                return new Response(Response, HttpStatusCode.Unauthorized);
+            }
+
+            //Delete network
+            try {
+                if (!Repositories.Networks.Delete(network)) {
+                    return new Response(Response, HttpStatusCode.NotFound);
+                } else {
+                    if (!NetworkManager.DeleteNetwork(network)) {
+                        return new Response(Response, HttpStatusCode.InternalServerError);
+                    } else {
+                        return new Response(Response, HttpStatusCode.OK);
+                    }
+                }
+            } catch (Exception exception) {
+                return new Response(Response, HttpStatusCode.InternalServerError, exception.Message);
+            }
+        }
+
         [HttpGet]
         [Route("getall")]
         [Produces("application/json")]

@@ -2,6 +2,7 @@
 using NeuralNetwork.Data;
 using NeuralNetworkAPI.Utils;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace NeuralNetworkAPI.Data.Networks
@@ -14,6 +15,15 @@ namespace NeuralNetworkAPI.Data.Networks
         {
             Network network = new Network(metadata.InputCount, metadata.HiddenWidth, metadata.Layers, metadata.OutputCount, metadata.LearningRate, ActivationFunctionType.Sigmoid);
             Network.Save(network, ParseSaveFile(metadata));
+        }
+
+        public static bool DeleteNetwork(NetworkMetadata metadata)
+        {
+            if (!File.Exists(ParseSaveFile(metadata))) {
+                return false;
+            }
+            File.Delete(ParseSaveFile(metadata));
+            return true;
         }
 
         public static string Process(NetworkMetadata metadata, NetworkInput input)

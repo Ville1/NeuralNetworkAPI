@@ -58,6 +58,20 @@ namespace NeuralNetworkAPI.Data.Repository
             }
         }
 
+        public bool Delete(T data)
+        {
+            if(!data.Id.HasValue || data.Id.Value < 0 || Get(data.Id.Value) == null) {
+                return false;
+            }
+            try {
+                File.WriteAllText(FileName, JsonConvert.SerializeObject(GetAll().Where(x => x.Id != data.Id).ToList()));
+            } catch (Exception exception) {
+                Logger.LogException(exception);
+                return false;
+            }
+            return true;
+        }
+
         private string FileName
         {
             get {
